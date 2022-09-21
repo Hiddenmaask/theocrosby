@@ -1,17 +1,28 @@
 <template>
+  <!--
   <div class="hero-lightpass-parent">
-    <canvas id="hero-lightpass" />
+    <canvas id="hero-lightpass"/>
   </div>
-  <InfoCard v-if="show=1" msg="Welcome to Your Vue.js App"/>
+  -->
+  <HeaderBar></HeaderBar>
+  <HeroPage></HeroPage>
+  <InfoCard v-if="show = 1" msg="Welcome to Your Vue.js App"/>
 </template>
 
 <script>
 import InfoCard from './components/InfoCard.vue'
+import HeaderBar from './components/HeaderBar.vue'
+import HeroPage from './components/HeroPage.vue'
+
+
+
 
 export default {
   name: 'App',
   components: {
     InfoCard,
+    HeaderBar,
+    HeroPage,
   },
   data(){
     return{
@@ -41,10 +52,9 @@ export default {
       document.getElementsByTagName("body").style = "#000";
     }
     const context = canvas.getContext("2d");
-
-    const frameCount = 148;
+    const frameCount = 88;
     const currentFrame = index => (
-        `https://www.apple.com/105/media/us/airpods-pro/2019/1299e2f5_9206_4470_b28e_08307a42f19b/anim/sequence/large/01-hero-lightpass/${index.toString().padStart(4, '0')}.jpg`
+        `dist/assets/plane/ezgif-frame-${index.toString().padStart(3, '0')}.jpg`
     )
 
     const preloadImages = () => {
@@ -56,8 +66,8 @@ export default {
 
     const img = new Image()
     img.src = currentFrame(1);
-    canvas.width=1158;
-    canvas.height=770;
+    canvas.width=2000;
+    canvas.height=2000;
     img.onload=function(){
       context.drawImage(img, 0, 0);
     }
@@ -87,6 +97,8 @@ export default {
 
 <style>
 
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 *, *::after, *::before {
   box-sizing: border-box;
   margin: 0;
@@ -106,8 +118,8 @@ label {
 
 
 :root{
-  --_hue: 240;
-  --_size: 2rem;
+  --_hue: 191;
+  --_size: 2vmax;
   --_radius: .2em;
   --_tspeed_fast: 150ms;
   --_tspeed_slow: 400ms;
@@ -115,23 +127,26 @@ label {
 
   /* Light Theme */
 
-  --bg--light: var(--_hue) 30% 94%;
-  --txt--light: var(--_hue) 40% 5%;
-  --accent--light: var(--_hue) 55% 50%;
-  --muted--light: var(--_hue) 30% 99%;
+  --bg--light: var(--_hue) 49% 95%;
+  --txt--light: 0% 3% 20%;
+  --accent--light: var(--_hue) 50% 57%;
+  --accentalt--light: var(--_hue) 84% 17%;
+  --muted--light: var(--_hue) 50% 98%;
 
   /* Dark Theme */
 
-  --bg--dark: var(--_hue) 15% 10%;
-  --txt--dark: var(--_hue) 30% 88%;
-  --accent--dark: var(--_hue) 50% 50%;
-  --muted--dark: var(--_hue) 20% 4%;
+  --bg--dark: var(--_hue) 49% 95%;
+  --txt--dark: 0% 3% 20%;
+  --accent--dark: var(--_hue) 50% 57%;
+  --accentalt--dark: var(--_hue) 84% 17%;
+  --muted--dark: var(--_hue) 50% 98;
 
   /* Defaults */
 
   --bg: var(--bg--light);
   --txt: var(--txt--light);
   --accent: var(--accent--light);
+  --accentalt: var(--accentalt--light);
   --muted: var(--muted--light);
   color-scheme: light;
 
@@ -145,6 +160,7 @@ label {
     --bg: var(--bg--dark);
     --txt: var(--txt--dark);
     --accent: var(--accent--dark);
+    --accentalt: var(--accentalt--dark);
     --muted: var(--muted--dark);
     color-scheme: dark;
   }
@@ -161,21 +177,28 @@ label {
 }
 
 #app{
-  max-width:100vw;
+  height: 100%;
+  width: 100%;
+
 }
 body{
   background-color: hsl(var(--bg));
   color: hsl(var(--txt));
   display: grid;
-  min-height: 200vh;
+  min-height: 300vh;
+  max-width: 100vw;
+  padding: 5vmax;
   place-items: center;
-  font-family: "Roboto Light", sans-serif;
-
+  font-family: 'League Spartan', sans-serif;
+  overflow-x:hidden;
 
 }
 
 body:has(div > canvas){
   background-color: #000;
+}
+
+section{
 }
 
 canvas {
@@ -203,9 +226,7 @@ canvas {
   color: hsl(var(--bg));
 }
 
-h1{
-  font-size: calc(var(--_size) * 1.3);
-}
+
 
 .container{
   margin-inline: max(calc((100vw - 70rem) / 2), 1.5rem);
@@ -299,8 +320,11 @@ form{
   background-color: hsl(var(--accent));
   color: hsl(var(--bg));
   text-decoration: none;
+  border: none;
+  font-size: calc(var(--_size)*1.2);
+  font-weight: 700;
+  margin-block: calc(var(--_size));
   padding: 0.4em 1.4em;
-  border-radius: var(--_radius);
   box-shadow: 0.05em 0.1em 0.9em hsl(var(--accent) / 0.3),
   0 0 0 -0.1em hsl(var(--bg)), 0 0 0 -0.2em hsl(var(--accent));
   transition: box-shadow var(--_tspeed_slow) var(--_ttype_squish),
@@ -329,6 +353,8 @@ form{
   box-shadow: 0 0 0 hsl(var(--accent) / 0.3), 0 0 0 0.2em hsl(var(--bg)),
   0 0 0 0.4em hsl(var(--accent) / 0.7);
 }
+
+
 
 </style>
 
